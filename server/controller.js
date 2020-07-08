@@ -3,10 +3,10 @@ const Review = require('../database/reviews.js');
 // GET REVIEW DATA
 const reviewsMain = function (req, res) {
   const room = req.params.roomId;
-  Review.find({ _roomId: room }).sort({ date: -1 })
+  Review.find({ roomId: room }).sort({ date: -1 })
     .exec((err, data) => {
       if (err) res.sendStatus(400);
-      res.send(data.slice(0, 6));
+      res.status(200).send(data.slice(0, 6));
     });
 };
 
@@ -19,7 +19,7 @@ const reviewsAll = function (req, res) {
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
 
-  Review.find({ _roomId: room }).sort({ date: -1 })
+  Review.find({ roomId: room }).sort({ date: -1 })
     .exec((err, data) => {
       if (err) res.sendStatus(400);
       res.send(data.slice(startIndex, endIndex));
@@ -32,12 +32,12 @@ const reviewScores = function (req, res) {
   const query = [
     {
       $match: {
-        _roomId: Number(room)
+        roomId: Number(room)
       }
     },
     {
       $group: {
-        _id: '$_roomId',
+        _id: '$roomId',
         total_cleanliness: { $avg: '$scores.cleanliness' },
         total_communication: { $avg: '$scores.communication' },
         total_check_in: { $avg: '$scores.check_in' },
@@ -62,12 +62,12 @@ const reviewOverall = function (req, res) {
   const query = [
     {
       $match: {
-        _roomId: Number(room)
+        roomId: Number(room)
       }
     },
     {
       $group: {
-        _id: '$_roomId',
+        _id: '$roomId',
         total_cleanliness: { $avg: '$scores.cleanliness' },
         total_communication: { $avg: '$scores.communication' },
         total_check_in: { $avg: '$scores.check_in' },
@@ -110,7 +110,7 @@ const postReview = function(req, res) {
     if (err) {
       res.sendStatus(500);
     } else {
-      res.send('review posted: ', data);
+      res.sendStatus(201);
     }
   });
 }
@@ -120,11 +120,18 @@ const updateReview = function(req, res) {
   const room = req.params.roomId;
   const update = req.params;
   Review.updateOne(
-    {_roomId: room},
+    {roomId: room},
     {
       $set: {update},
     }
   )
+  .exec((err, data) => {
+    if (err) {
+      res.sendStatus(500);
+    } else {
+      res.sendStatus(204).send(data);
+    }
+  });
 }
 
 //DELETE:
@@ -144,12 +151,12 @@ const updateReview = function(req, res) {
 //delete all reviews from particular property:
 const deleteReviews = function(req, res) {
   const room = req.params.roomId;
-  Review.deleteMany({_roomId: room})
+  Review.deleteMany({roomId: room})
   .exec((err, data) => {
     if (err) {
       res.sendStatus(404);
     } else {
-      res.send('all reviews deleted: ', data);
+      res.sendStatus(204);
     }
   });
 }

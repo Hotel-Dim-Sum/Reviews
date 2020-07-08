@@ -7,10 +7,9 @@ const createSampleReviews = function () {
 
   for (let i = 0; i < 10000; i++) { // EDIT NUMBER OF ENTRIES HERE
     reviews.push({
-      _roomId: faker.random.number({ min: 1, max: 100 }),
-      user_name: faker.name.firstName(),
-      user_image: faker.image.avatar(),
-      user_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+      roomId: faker.random.number({ min: 1, max: 100 }),
+      username: faker.name.firstName(),
+      image: faker.image.avatar(),
       date: faker.date.between('2017-01-01', '2020-06-15'),
       text: faker.hacker.phrase(),
       scores: {

@@ -3,10 +3,9 @@ const db = require('./index.js');
 mongoose.Promise = global.Promise;
 
 const reviewSchema = new mongoose.Schema({
-  _roomId: Number,
-  user_name: String,
-  user_image: String,
-  user_url: String,
+  roomId: Number,
+  username: String,
+  image: String,
   date: Date,
   text: String,
   scores: {
