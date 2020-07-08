@@ -116,7 +116,6 @@ const postReview = function(req, res) {
 }
 
 //UPDATE/PUT:
-//need to figure out what i want to update 
 const updateReview = function(req, res) {
   const room = req.params.roomId;
   const update = req.params;
