@@ -101,9 +101,67 @@ const reviewOverall = function (req, res) {
     });
 };
 
+
+//CREATE/POST:
+const postReview = function(req, res) {
+  const room = req.params;
+  Review.insertOne(room)
+  .exec((err, data) => {
+    if (err) {
+      res.sendStatus(500);
+    } else {
+      res.send('review posted: ', data);
+    }
+  });
+}
+
+//UPDATE/PUT:
+//need to figure out what i want to update 
+const updateReview = function(req, res) {
+  const room = req.params.roomId;
+  const update = req.params;
+  Review.updateOne(
+    {_roomId: room},
+    {
+      $set: {update},
+    }
+  )
+}
+
+//DELETE:
+//delete one review??
+// const deleteReview = function (req, res) {
+//   const room = req.params.roomId;
+//   Review.deleteOne({_roomId: room})
+//   .exec((err, data) => {
+//     if (err) {
+//       res.sendStatus(404);
+//     } else {
+//       res.send('review deleted: ', data);
+//     }
+//   });
+// }
+
+//delete all reviews from particular property:
+const deleteReviews = function(req, res) {
+  const room = req.params.roomId;
+  Review.deleteMany({_roomId: room})
+  .exec((err, data) => {
+    if (err) {
+      res.sendStatus(404);
+    } else {
+      res.send('all reviews deleted: ', data);
+    }
+  });
+}
+
+
 module.exports = {
   reviewsMain,
   reviewsAll,
   reviewScores,
-  reviewOverall
+  reviewOverall,
+  postReview,
+  updateReview,
+  deleteReviews,
 };
