@@ -13,7 +13,6 @@
   {
     "roomId": "Number",
     "username": "String",
-    "image": "String",
     "date": "Date",
     "text": "String",
     "scores": {
