@@ -6,6 +6,9 @@
 ```
 /reviews/:roomId
 ```
+**Path Parameters:**
+  * `roomId` room ID
+  
 **Success status code:** `201`
 
 **Request Body:** Expects JSON with the following keys:
@@ -13,16 +16,15 @@
   {
     "roomId": "Number",
     "username": "String",
-    "date": "Date",
-    "text": "String",
-    "scores": {
-      "cleanliness": "Number",
-      "communication": "Number",
-      "check_in": "Number",
-      "accuracy": "Number",
-      "location": "Number",
-      "value": "Number"
-    }
+    "review_date": "Date",
+    "review_body": "String",
+    "score": "Number",
+    "cleanliness_score": "Number",
+    "communication_score": "Number",
+    "checkin_score": "Number",
+    "accuracy_score": "Number",
+    "location_score": "Number",
+    "value_score": "Number"
   }
 ```
 
@@ -31,58 +33,79 @@
 ```
 /reviews/:roomId
 ```
+**Path Parameters:**
+  * `roomId` room ID
+  
 **Success status code:** `200`
 
 **Returns:** A JSON object for each review the room has
 ```json
-  {
-    "roomId": "Number",
-    "username": "String",
-    "image": "String",
-    "date": "Date",
-    "text": "String",
-    "scores": {
-      "cleanliness": "Number",
-      "communication": "Number",
-      "check_in": "Number",
-      "accuracy": "Number",
-      "location": "Number",
-      "value": "Number"
-    }
-  }
+  [
+    {
+      "id": "Number",
+      "roomId": "Number",
+      "username": "String",
+      "review_date": "Date",
+      "review_body": "String",
+      "score": "Number",
+      "cleanliness_score": "Number",
+      "communication_score": "Number",
+      "checkin_score": "Number",
+      "accuracy_score": "Number",
+      "location_score": "Number",
+      "value_score": "Number"
+    },
+    {
+      "id": "Number",
+      "roomId": "Number",
+      "username": "String",
+      "review_date": "Date",
+      "review_body": "String",
+      "score": "Number",
+      "cleanliness_score": "Number",
+      "communication_score": "Number",
+      "checkin_score": "Number",
+      "accuracy_score": "Number",
+      "location_score": "Number",
+      "value_score": "Number"
+    },
+    ...
+  ]
 ```
 
-### UPDATE/Put:
+### UPDATE/Patch:
 **Update review**
 ```
-/reviews/:roomId
+/reviews/:roomId/:id
 ```
+**Path Parameters:**
+  * `roomId` room ID
+  * `id` review ID
+
 **Success status code:** `204`
 
-**Request Body:** Expects JSON with all of the following keys:
+**Request Body:** Expects JSON with any of the following keys (include only keys to be updated):
 ```json
   {
-    "roomId": "Number",
-    "username": "String",
-    "image": "String",
-    "date": "Date",
-    "text": "String",
-    "scores": {
-      "cleanliness": "Number",
-      "communication": "Number",
-      "check_in": "Number",
-      "accuracy": "Number",
-      "location": "Number",
-      "value": "Number"
-    }
+    "score": "Number", *OPTIONAL*
+    "cleanliness_score": "Number", *OPTIONAL*
+    "communication_score": "Number", *OPTIONAL*
+    "checkin_score": "Number", *OPTIONAL*
+    "accuracy_score": "Number", *OPTIONAL*
+    "location_score": "Number", *OPTIONAL*
+    "value_score": "Number" *OPTIONAL*
   }
 ```
 
 ### DELETE/Delete:
-**Delete all reviews for room**
+**Delete one review**
 ```
-/reviews/:roomId
+/reviews/:roomId/:id
 ```
+**Path Parameters:**
+  * `roomId` room ID
+  * `id` review ID
+
 **Success status code:** `204`
 
 
