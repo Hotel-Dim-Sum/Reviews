@@ -87,6 +87,7 @@
 **Request Body:** Expects JSON with any of the following keys (include only keys to be updated):
 ```json
   {
+    "review_body": "String", *OPTIONAL*
     "score": "Number", *OPTIONAL*
     "cleanliness_score": "Number", *OPTIONAL*
     "communication_score": "Number", *OPTIONAL*
