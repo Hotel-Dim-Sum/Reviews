@@ -48,7 +48,7 @@ CREATE TABLE reviews_by_user (
 
 CREATE TABLE users (
   user_id int PRIMARY KEY,
-  username varchar(25),
+  user_name varchar(25),
   user_image varchar(50)
 );
 

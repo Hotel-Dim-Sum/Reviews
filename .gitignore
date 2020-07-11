@@ -23,3 +23,7 @@ coverage
 # Compiled Dirs (http://nodejs.org/api/addons.html)
 build/
 
+#CSV FILES:
+database/postgresDB/propertyGenerator.csv
+database/postgresDB/userGenerator.csv
+database/postgresDB/reviewGenerator.csv

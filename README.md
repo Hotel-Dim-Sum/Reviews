@@ -15,7 +15,7 @@
 ```json
   {
     "roomId": "Number",
-    "username": "String",
+    "user_name": "String",
     "review_date": "Date",
     "review_body": "String",
     "score": "Number",
@@ -44,7 +44,7 @@
     {
       "id": "Number",
       "roomId": "Number",
-      "username": "String",
+      "user_name": "String",
       "review_date": "Date",
       "review_body": "String",
       "score": "Number",
@@ -58,7 +58,7 @@
     {
       "id": "Number",
       "roomId": "Number",
-      "username": "String",
+      "user_name": "String",
       "review_date": "Date",
       "review_body": "String",
       "score": "Number",
