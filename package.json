@@ -10,6 +10,10 @@
     "userSeedPostgres": "node database/postgresDB/userGenerator.js",
     "propertySeedPostgres": "node database/postgresDB/propertyGenerator.js",
     "reviewSeedPostgres": "node database/postgresDB/reviewGenerator.js",
+    "userSeedCassandra": "node database/cassandraDB/userGenerator.js",
+    "propertySeedCassandra": "node database/cassandraDB/propertyGenerator.js",
+    "propertyReviewSeedCassandra": "node database/cassandraDB/propertyReviewGenerator.js",
+    "userReviewSeedCassandra": "node database/cassandraDB/userReviewGenerator.js",
     "dev:react": "webpack -d --watch",
     "build": "webpack --mode production",
     "test": "jest"
