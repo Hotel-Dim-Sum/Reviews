@@ -26,4 +26,16 @@ build/
 #CSV FILES:
 database/postgresDB/propertyGenerator.csv
 database/postgresDB/userGenerator.csv
-database/postgresDB/reviewGenerator.csv
+database/postgresDB/reviewGenerator1.csv
+database/postgresDB/reviewGenerator2.csv
+database/postgresDB/reviewGenerator3.csv
+database/postgresDB/reviewGenerator4.csv
+database/postgresDB/reviewGenerator5.csv
+database/postgresDB/reviewGenerator6.csv
+database/postgresDB/reviewGenerator7.csv
+database/postgresDB/reviewGenerator8.csv
+
+database/cassandraDB/propertyGenerator.csv
+database/cassandraDB/userGenerator.csv
+database/cassandraDB/propertyReviewGenerator.csv
+database/cassandraDB/userReviewGenerator.csv

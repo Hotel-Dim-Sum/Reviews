@@ -8,10 +8,10 @@ const writer = csvWriter();
 const createUsers = () => {
   writer.pipe(fs.createWriteStream('./database/postGresDB/userGenerator.csv'));
   // will change to 2.5 mil later 2500000
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 2500000; i++) {
     writer.write({
       id: i + 1,
-      username: faker.name.findName().toString(),
+      user_name: faker.name.findName().toString(),
       user_image: faker.image.avatar(),
     });
   }

@@ -24,7 +24,7 @@ CREATE TABLE properties (
 
 CREATE TABLE users (
   id SERIAL,
-  user_name VARCHAR(25),
+  user_name VARCHAR(40),
   user_image VARCHAR(75),
   PRIMARY KEY (id)
 );
@@ -49,4 +49,11 @@ CREATE TABLE reviews (
 
 COPY properties FROM '/Users/rebeccaquey/Documents/Rebecca_Repos/hrsf128/SDC/Reviews/database/postgresDB/propertyGenerator.csv' DELIMITER',' CSV HEADER;
 COPY users FROM '/Users/rebeccaquey/Documents/Rebecca_Repos/hrsf128/SDC/Reviews/database/postgresDB/userGenerator.csv' DELIMITER',' CSV HEADER;
-COPY reviews FROM '/Users/rebeccaquey/Documents/Rebecca_Repos/hrsf128/SDC/Reviews/database/postgresDB/reviewGenerator.csv' DELIMITER',' CSV HEADER;
+COPY reviews FROM '/Users/rebeccaquey/Documents/Rebecca_Repos/hrsf128/SDC/Reviews/database/postgresDB/reviewGenerator1.csv' DELIMITER',' CSV HEADER;
+COPY reviews FROM '/Users/rebeccaquey/Documents/Rebecca_Repos/hrsf128/SDC/Reviews/database/postgresDB/reviewGenerator2.csv' DELIMITER',' CSV HEADER;
+COPY reviews FROM '/Users/rebeccaquey/Documents/Rebecca_Repos/hrsf128/SDC/Reviews/database/postgresDB/reviewGenerator3.csv' DELIMITER',' CSV HEADER;
+COPY reviews FROM '/Users/rebeccaquey/Documents/Rebecca_Repos/hrsf128/SDC/Reviews/database/postgresDB/reviewGenerator4.csv' DELIMITER',' CSV HEADER;
+COPY reviews FROM '/Users/rebeccaquey/Documents/Rebecca_Repos/hrsf128/SDC/Reviews/database/postgresDB/reviewGenerator5.csv' DELIMITER',' CSV HEADER;
+COPY reviews FROM '/Users/rebeccaquey/Documents/Rebecca_Repos/hrsf128/SDC/Reviews/database/postgresDB/reviewGenerator6.csv' DELIMITER',' CSV HEADER;
+COPY reviews FROM '/Users/rebeccaquey/Documents/Rebecca_Repos/hrsf128/SDC/Reviews/database/postgresDB/reviewGenerator7.csv' DELIMITER',' CSV HEADER;
+COPY reviews FROM '/Users/rebeccaquey/Documents/Rebecca_Repos/hrsf128/SDC/Reviews/database/postgresDB/reviewGenerator8.csv' DELIMITER',' CSV HEADER;
