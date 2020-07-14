@@ -51,10 +51,6 @@ CREATE TABLE reviews_by_user (
   PRIMARY KEY (user_id, review_id)
 );
 
--- should i create a scores table? with the reviewId as the partitioning key?
-
--- ask about how to figure out how to reduce the number of reviews -- can consider what the minimum amount of data is -- 10 reviews? have the reviews for each property be a random number between 10 and 100? and then generate that many reviews for that property?
-
 COPY properties (room_id, total_score, cleanliness_score, communication_score, checkin_score, accuracy_score, location_score, value_score) FROM '/Users/rebeccaquey/Documents/Rebecca_Repos/hrsf128/SDC/Reviews/database/cassandraDB/propertyGenerator.csv' with header=false and delimiter =',';
 
 COPY users (user_id, user_name, user_image) FROM '/Users/rebeccaquey/Documents/Rebecca_Repos/hrsf128/SDC/Reviews/database/cassandraDB/userGenerator.csv' with header=false and delimiter =',';

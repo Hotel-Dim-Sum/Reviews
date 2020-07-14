@@ -1,18 +1,11 @@
 const faker = require('faker');
 const fs = require('fs');
-// const csvWriter = require('csv-write-stream');
-
-// const writer = csvWriter();
-
-// create 10mil Reviews
 
 const getRandomRating = () => ((Math.random() * 2) + 3).toFixed(2);
 
-// change to 10 million later
-const getRandomRoom = () => Math.floor(Math.random() * 100) + 1;
+const getRandomRoom = () => Math.floor(Math.random() * 10000000) + 1;
 
-// change to 2.5 mil later
-const getRandomUser = () => Math.floor(Math.random() * 100) + 1;
+const getRandomUser = () => Math.floor(Math.random() * 2500000) + 1;
 
 const getRandomDate = (start, end) => (new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toISOString().slice(0, 10));
 
@@ -24,9 +17,7 @@ const writeAllReviews = (writer, start, callback) => {
   let count = 0;
   const write = () => {
     let ok = true;
-    // change to 50mil later
     while (ok && count < 50000000) {
-      // change to 10mil
       if (count % 10000000 === 0) {
         console.log(count);
       }
