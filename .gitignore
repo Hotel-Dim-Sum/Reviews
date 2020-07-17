@@ -39,3 +39,4 @@ database/cassandraDB/propertyGenerator.csv
 database/cassandraDB/userGenerator.csv
 database/cassandraDB/propertyReviewGenerator.csv
 database/cassandraDB/userReviewGenerator.csv
+database/cassandraDB/propertyReviewGenerator2.csv

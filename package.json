@@ -16,7 +16,8 @@
     "userReviewSeedCassandra": "node database/cassandraDB/userReviewGenerator.js",
     "dev:react": "webpack -d --watch",
     "build": "webpack --mode production",
-    "test": "jest"
+    "test": "jest",
+    "k6": "k6 run ./server/test-rps.js"
   },
   "keywords": [],
   "author": "",
@@ -32,12 +33,15 @@
     "moment": "^2.27.0",
     "mongodb": "^3.5.9",
     "mongoose": "^5.9.19",
+    "newrelic": "^6.11.0",
     "nodemon": "^2.0.4",
     "path": "^0.12.7",
+    "pg": "^8.3.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-lazyload": "^3.0.0",
-    "react-modal": "^3.11.2"
+    "react-modal": "^3.11.2",
+    "redis": "^3.0.2"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.10.3",
