@@ -7,6 +7,10 @@ npm-debug.log
 node_modules/
 
 newrelic.js
+nrdiag-filelist.txt
+nrdiag-output.json
+nrdiag-output.zip
+nrdiag_x64
 
 pids
 *.pid
