@@ -2,7 +2,7 @@ DROP KEYSPACE IF EXISTS reviews;
 CREATE KEYSPACE IF NOT EXISTS reviews WITH REPLICATION = {'class': 'SimpleStrategy', 'replication_factor': 1};
 USE reviews;
 
-CREATE TABLE properties (
+CREATE TABLE IF NOT EXISTS properties (
   room_id int PRIMARY KEY,
   total_score float,
   cleanliness_score float,
@@ -13,13 +13,13 @@ CREATE TABLE properties (
   value_score float
 );
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
   user_id int PRIMARY KEY,
   user_name varchar,
   user_image varchar
 );
 
-CREATE TABLE reviews_by_property (
+CREATE TABLE IF NOT EXISTS reviews_by_property (
   room_id int,
   review_id int,
   user_id int,
@@ -33,9 +33,9 @@ CREATE TABLE reviews_by_property (
   location_score float,
   value_score float,
   PRIMARY KEY (room_id, review_id)
-);
+) WITH CLUSTERING ORDER BY (review_id DESC);
 
-CREATE TABLE reviews_by_user (
+CREATE TABLE IF NOT EXISTS reviews_by_user (
   user_id int,
   review_id int,
   room_id int,
@@ -49,7 +49,7 @@ CREATE TABLE reviews_by_user (
   location_score float,
   value_score float,
   PRIMARY KEY (user_id, review_id)
-);
+) WITH CLUSTERING ORDER BY (review_id DESC);
 
 COPY properties (room_id, total_score, cleanliness_score, communication_score, checkin_score, accuracy_score, location_score, value_score) FROM '/Users/rebeccaquey/Documents/Rebecca_Repos/hrsf128/SDC/Reviews/database/cassandraDB/propertyGenerator.csv' with header=false and delimiter =',';
 

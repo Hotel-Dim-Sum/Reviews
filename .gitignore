@@ -6,6 +6,8 @@ npm
 npm-debug.log
 node_modules/
 
+newrelic.js
+
 pids
 *.pid
 logs
@@ -39,3 +41,4 @@ database/cassandraDB/propertyGenerator.csv
 database/cassandraDB/userGenerator.csv
 database/cassandraDB/propertyReviewGenerator.csv
 database/cassandraDB/userReviewGenerator.csv
+database/cassandraDB/propertyReviewGenerator2.csv
