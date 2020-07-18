@@ -1,5 +1,20 @@
 const Review = require('../database/postgresDB/index.js');
 
+// REDIS SET UP
+// production redis url
+let redisUrl = process.env.REDIS_URL;
+
+if (process.env.ENVIRONMENT === 'development') {
+  require('dotenv').config();
+  redisUrl = 'redis://127.0.0.1';
+}
+
+// redis setup
+const client = require('redis').createClient(redisUrl);
+const Redis = require('ioredis');
+
+const redis = new Redis(redisUrl);
+
 // // GET REVIEW DATA
 // const reviewsMain = function (req, res) {
 //   const room = req.params.roomId;
@@ -101,81 +116,101 @@ const Review = require('../database/postgresDB/index.js');
 //     });
 // };
 
-//READ/GET:
+// READ/GET:
+
+// const getReviews = function (req, res) {
+//   const room = req.params.roomId;
+//   // console.log(req.params);
+//   const query = `select * from reviews inner join properties on reviews.roomId = properties.id where reviews.roomId = ${room}`;
+//   Review.query(query, (err, data) => {
+//     if (err) {
+//       res.sendStatus(500);
+//     } else {
+//       res.status(200).send(data);
+//     }
+//   });
+// };
+
+// REDIS GET REQUEST:
 const getReviews = function (req, res) {
-  const room = req.params.roomId;
-  // console.log(req.params);
-  const query = `select * from reviews inner join properties on reviews.roomId = properties.id where reviews.roomId = ${room}`;
-  Review.query(query, (err, data) => {
-    if (err) {
-      res.sendStatus(500);
+  const { roomId } = req.params;
+  const query = `select * from reviews inner join properties on reviews.roomId = properties.id where reviews.roomId = ${roomId}`;
+  client.get(roomId, (redisGetError, redisData) => {
+    if (redisGetError) {
+      res.status(500).json({ redisGetError });
+      return;
+    }
+    if (redisData) {
+      // eslint-disable-next-line max-len
+      // JSON objects need to be parsed after reading from redis, since it is stringified before being stored into cache
+      // console.log('redis has get!');
+      res.status(200).json(JSON.parse(redisData));
     } else {
-      res.status(200).send(data);
+      Review.query(query, (err, data) => {
+        if (err) {
+          res.sendStatus(500);
+        } else {
+          res.status(200).send(data);
+          client.set(roomId, JSON.stringify(data), (redisSetError, result) => {
+            if (redisSetError) {
+              res.status(500).json({ redisSetError });
+            // } else {
+            //   console.log('redis has set!');
+            }
+          });
+        }
+      });
     }
   });
 };
 
-//CREATE/POST:
-const postReview = function(req, res) {
+// CREATE/POST:
+const postReview = function (req, res) {
   const room = req.params;
   const query = '';
-  Review.query()
+  Review.query();
   Review.insertOne(room)
-  .exec((err, data) => {
-    if (err) {
-      res.sendStatus(500);
-    } else {
-      res.sendStatus(201);
-    }
-  });
-}
+    .exec((err, data) => {
+      if (err) {
+        res.sendStatus(500);
+      } else {
+        res.sendStatus(201);
+      }
+    });
+};
 
-//UPDATE/PUT:
+// UPDATE/PUT:
 const updateReview = function(req, res) {
   const room = req.params.roomId;
   const update = req.params;
   Review.updateOne(
-    {roomId: room},
+    { roomId: room },
     {
-      $set: {update},
+      $set: { update },
     }
   )
-  .exec((err, data) => {
-    if (err) {
-      res.sendStatus(500);
-    } else {
-      res.sendStatus(204).send(data);
-    }
-  });
-}
+    .exec((err, data) => {
+      if (err) {
+        res.sendStatus(500);
+      } else {
+        res.sendStatus(204).send(data);
+      }
+    });
+};
 
-//DELETE:
-//delete one review??
-// const deleteReview = function (req, res) {
-//   const room = req.params.roomId;
-//   Review.deleteOne({_roomId: room})
-//   .exec((err, data) => {
-//     if (err) {
-//       res.sendStatus(404);
-//     } else {
-//       res.send('review deleted: ', data);
-//     }
-//   });
-// }
-
-//delete all reviews from particular property:
-const deleteReviews = function(req, res) {
+// DELETE:
+// delete all reviews from particular property:
+const deleteReviews = function (req, res) {
   const room = req.params.roomId;
-  Review.deleteMany({roomId: room})
-  .exec((err, data) => {
-    if (err) {
-      res.sendStatus(404);
-    } else {
-      res.sendStatus(204);
-    }
-  });
-}
-
+  Review.deleteMany({ roomId: room })
+    .exec((err, data) => {
+      if (err) {
+        res.sendStatus(404);
+      } else {
+        res.sendStatus(204);
+      }
+    });
+};
 
 module.exports = {
   // reviewsMain,
