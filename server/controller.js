@@ -2,167 +2,81 @@ const Review = require('../database/postgresDB/index.js');
 
 // REDIS SET UP
 // production redis url
-let redisUrl = process.env.REDIS_URL;
+// let redisUrl = process.env.REDIS_URL;
 
-if (process.env.ENVIRONMENT === 'development') {
-  require('dotenv').config();
-  redisUrl = 'redis://127.0.0.1';
-}
+// if (process.env.ENVIRONMENT === 'development') {
+//   require('dotenv').config();
+//   redisUrl = 'redis://127.0.0.1';
+// }
 
-// redis setup
-const client = require('redis').createClient(redisUrl);
-const Redis = require('ioredis');
+// // redis setup
+// const client = require('redis').createClient(redisUrl);
+// const Redis = require('ioredis');
 
-const redis = new Redis(redisUrl);
+// const redis = new Redis(redisUrl);
 
-// // GET REVIEW DATA
-// const reviewsMain = function (req, res) {
-//   const room = req.params.roomId;
-//   Review.find({ roomId: room }).sort({ date: -1 })
-//     .exec((err, data) => {
-//       if (err) res.sendStatus(400);
-//       res.status(200).send(data.slice(0, 6));
-//     });
-// };
-
-// // GET ALL REVIEW DATA FOR MODAL
-// const reviewsAll = function (req, res) {
-//   const room = req.params.roomId;
-//   const limit = Number(req.query.limit);
-//   const page = Number(req.query.page);
-
-//   const startIndex = (page - 1) * limit;
-//   const endIndex = page * limit;
-
-//   Review.find({ roomId: room }).sort({ date: -1 })
-//     .exec((err, data) => {
-//       if (err) res.sendStatus(400);
-//       res.send(data.slice(startIndex, endIndex));
-//     });
-// };
-
-// // COMBINE REVIEW SCORES BASED ON ROOM ID
-// const reviewScores = function (req, res) {
-//   const room = req.params.roomId;
-//   const query = [
-//     {
-//       $match: {
-//         roomId: Number(room)
-//       }
-//     },
-//     {
-//       $group: {
-//         _id: '$roomId',
-//         total_cleanliness: { $avg: '$scores.cleanliness' },
-//         total_communication: { $avg: '$scores.communication' },
-//         total_check_in: { $avg: '$scores.check_in' },
-//         total_accuracy: { $avg: '$scores.accuracy' },
-//         total_location: { $avg: '$scores.location' },
-//         total_value: { $avg: '$scores.value' },
-//         total_reviews: { $sum: 1 }
-//       }
-//     }
-//   ];
-
-//   Review.aggregate(query)
-//     .exec((err, data) => {
-//       if (err) res.sendStatus(400);
-//       res.send(data);
-//     });
-// };
-
-// // GET OVERALL RATING BASED ON AGGREGATE ROOM SCORES
-// const reviewOverall = function (req, res) {
-//   const room = req.params.roomId;
-//   const query = [
-//     {
-//       $match: {
-//         roomId: Number(room)
-//       }
-//     },
-//     {
-//       $group: {
-//         _id: '$roomId',
-//         total_cleanliness: { $avg: '$scores.cleanliness' },
-//         total_communication: { $avg: '$scores.communication' },
-//         total_check_in: { $avg: '$scores.check_in' },
-//         total_accuracy: { $avg: '$scores.accuracy' },
-//         total_location: { $avg: '$scores.location' },
-//         total_value: { $avg: '$scores.value' },
-//         total_reviews: { $sum: 1 }
-//       }
-//     },
-//     {
-//       $project: {
-//         total_reviews: '$total_reviews',
-//         total_score: {
-//           $avg: [
-//             '$total_cleanliness',
-//             '$total_communication',
-//             'total_check_in',
-//             'total_accuracy',
-//             'total_location',
-//             'total_value'
-//           ]
-//         }
-//       }
-//     }
-//   ];
-
-//   Review.aggregate(query)
-//     .exec((err, data) => {
-//       if (err) res.sendStatus(400);
-//       res.send(data);
-//     });
-// };
 
 // READ/GET:
-
-// const getReviews = function (req, res) {
-//   const room = req.params.roomId;
-//   // console.log(req.params);
-//   const query = `select * from reviews inner join properties on reviews.roomId = properties.id where reviews.roomId = ${room}`;
-//   Review.query(query, (err, data) => {
-//     if (err) {
-//       res.sendStatus(500);
-//     } else {
-//       res.status(200).send(data);
-//     }
-//   });
-// };
-
-// REDIS GET REQUEST:
 const getReviews = function (req, res) {
-  const { roomId } = req.params;
-  const query = `select * from reviews inner join properties on reviews.roomId = properties.id where reviews.roomId = ${roomId}`;
-  client.get(roomId, (redisGetError, redisData) => {
-    if (redisGetError) {
-      res.status(500).json({ redisGetError });
-      return;
-    }
-    if (redisData) {
-      // eslint-disable-next-line max-len
-      // JSON objects need to be parsed after reading from redis, since it is stringified before being stored into cache
-      // console.log('redis has get!');
-      res.status(200).json(JSON.parse(redisData));
+  const room = req.params.roomId;
+  const query = `select * from reviews inner join properties on reviews.roomId = properties.id where reviews.roomId = ${room}`;
+  Review.query(query, (err, data) => {
+    if (err) {
+      res.sendStatus(500);
     } else {
-      Review.query(query, (err, data) => {
-        if (err) {
-          res.sendStatus(500);
-        } else {
-          res.status(200).send(data);
-          client.set(roomId, JSON.stringify(data), (redisSetError, result) => {
-            if (redisSetError) {
-              res.status(500).json({ redisSetError });
-            // } else {
-            //   console.log('redis has set!');
-            }
-          });
-        }
-      });
+      res.status(200).send(data.rows);
     }
   });
 };
+
+const getUser = function (req, res) {
+  const user = req.params.userId;
+  const query = `select * from users where id = ${user}`;
+  Review.query(query, (err, data) => {
+    if (err) {
+      res.sendStatus(500);
+    } else {
+      console.log(data.rows);
+      res.status(200).send(data.rows);
+    }
+  });
+};
+
+// // REDIS GET REQUEST:
+// const getReviews = function (req, res) {
+//   const { roomId } = req.params;
+//   const query = `select * from reviews inner join properties on reviews.roomId = properties.id where reviews.roomId = ${roomId}`;
+//   client.get(roomId, (redisGetError, redisData) => {
+//     if (redisGetError) {
+//       res.status(500).json({ redisGetError });
+//       return;
+//     }
+//     if (redisData) {
+//       // eslint-disable-next-line max-len
+//       // JSON objects need to be parsed after reading from redis, since it is stringified before being stored into cache
+//       // console.log('redis has get!');
+//       let rowData = redisData.rows;
+//       res.status(200).json(JSON.parse(rowData));
+//       console.log(rowData);
+//     } else {
+//       Review.query(query, (err, data) => {
+//         if (err) {
+//           res.sendStatus(500);
+//         } else {
+//           res.status(200).send(data.rows);
+//           console.log(data.rows);
+//           client.set(roomId, JSON.stringify(data), (redisSetError, result) => {
+//             if (redisSetError) {
+//               res.status(500).json({ redisSetError });
+//             // } else {
+//             //   console.log('redis has set!');
+//             }
+//           });
+//         }
+//       });
+//     }
+//   });
+// };
 
 // CREATE/POST:
 const postReview = function (req, res) {
@@ -213,11 +127,8 @@ const deleteReviews = function (req, res) {
 };
 
 module.exports = {
-  // reviewsMain,
-  // reviewsAll,
-  // reviewScores,
-  // reviewOverall,
   getReviews,
+  getUser,
   postReview,
   updateReview,
   deleteReviews,

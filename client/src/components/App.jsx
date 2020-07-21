@@ -1,17 +1,14 @@
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable max-len */
 import React from 'react';
 import Modal from 'react-modal';
 import LazyLoad from 'react-lazyload';
+import axios from 'axios';
 
 import styles from '../styles/style.css';
-import Parser from './Parser.js';
 import Reviews from './Reviews.jsx';
 import Scores from './Scores.jsx';
 import ModalReviews from './Modal/ModalReviews.jsx';
 
-const roomId = Math.floor(Math.random() * 100 + 1); // Number((window.location.pathname).slice(1, window.location.pathname.length - 1));
+const roomId = Math.floor(Math.random() * 10000000 + 1);
 
 Modal.setAppElement('#reviews');
 
@@ -30,7 +27,6 @@ class App extends React.Component {
       checkIn: 0,
       value: 0,
       modal: false,
-      roomId: roomId
     };
 
     this.hideReviews = this.hideReviews.bind(this);
@@ -40,27 +36,54 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    Parser.getReviews(roomId, (data) => {
-      this.setState({
-        reviews: data
+    axios.get(`/reviews/${roomId}`)
+      .then(({data}) => {
+        const allReviews = [];
+        let cleanlinessScore = 0;
+        let accuracyScore = 0;
+        let communicationScore = 0;
+        let locationScore = 0;
+        let checkInScore = 0;
+        let valueScore = 0;
+        let overallScore = 0;
+        const numReviews = data.length;
+        for (let i = 0; i < data.length; i++) {
+          const eachReview = {
+            text: data[i]['review_body'],
+            date: data[i]['review_date'],
+            user_id: data[i]['userid'],
+          };
+          allReviews.push(eachReview);
+          cleanlinessScore += data[i]['cleanliness_score'];
+          accuracyScore += data[i]['accuracy_score'];
+          communicationScore += data[i]['communication_score'];
+          locationScore += data[i]['location_score'];
+          checkInScore += data[i]['checkin_score'];
+          valueScore += data[i]['value_score'];
+          overallScore += data[i]['total_score'];
+        }
+        cleanlinessScore = (cleanlinessScore / numReviews).toFixed(2);
+        accuracyScore = (accuracyScore / numReviews).toFixed(2);
+        communicationScore = (communicationScore / numReviews).toFixed(2);
+        locationScore = (locationScore / numReviews).toFixed(2);
+        checkInScore = (checkInScore / numReviews).toFixed(2);
+        valueScore = (valueScore / numReviews).toFixed(2);
+        overallScore = (overallScore / numReviews).toFixed(2);
+        this.setState({
+          reviews: allReviews,
+          cleanliness: cleanlinessScore,
+          accuracy: accuracyScore,
+          communication: communicationScore,
+          location: locationScore,
+          checkIn: checkInScore,
+          value: valueScore,
+          overall: overallScore,
+          totalReviews: numReviews,
+        });
+      })
+      .catch((err) => {
+        console.log('react get request error: ', err);
       });
-    });
-    Parser.getReviewScores(roomId, (data) => {
-      this.setState({
-        cleanliness: data[0].total_cleanliness.toFixed(1),
-        accuracy: data[0].total_accuracy.toFixed(1),
-        communication: data[0].total_communication.toFixed(1),
-        location: data[0].total_location.toFixed(1),
-        checkIn: data[0].total_check_in.toFixed(1),
-        value: data[0].total_value.toFixed(1)
-      });
-    });
-    Parser.getReviewOverall(roomId, (data) => {
-      this.setState({
-        overall: (data[0].total_score).toFixed(2),
-        totalReviews: data[0].total_reviews
-      });
-    });
   }
 
   showReviews() {
@@ -119,7 +142,7 @@ class App extends React.Component {
           }}
         >
           <ModalReviews
-            roomId={this.state.roomId}
+            reviews={this.state.reviews}
             hideModal={this.hideReviews}
             overall={this.state.overall}
             totalReviews={this.state.totalReviews}
