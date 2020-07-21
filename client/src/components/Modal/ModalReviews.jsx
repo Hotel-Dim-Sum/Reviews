@@ -14,7 +14,7 @@ class ModalReviews extends React.Component {
     super(props);
 
     this.state = {
-      reviews: [],
+    //   reviews: [],
       pageNumber: 3
     };
 
@@ -23,13 +23,13 @@ class ModalReviews extends React.Component {
   }
 
   componentDidMount() {
-    Parser.getAllReviews(this.props.roomId, 1, (data1) => {
-      Parser.getAllReviews(this.props.roomId, 2, (data2) => {
-        this.setState({
-          reviews: [...this.state.reviews, ...data1, ...data2]
-        });
-      });
-    });
+  //   Parser.getAllReviews(this.props.roomId, 1, (data1) => {
+  //     Parser.getAllReviews(this.props.roomId, 2, (data2) => {
+  //       this.setState({
+  //         reviews: [...this.state.reviews, ...data1, ...data2]
+  //       });
+  //     });
+  //   });
 
     document.addEventListener('scroll', this.handleScroll, true);
   }
@@ -44,14 +44,14 @@ class ModalReviews extends React.Component {
 
   handleScroll(e) {
     const elem = e.target;
-    console.log(elem.scrollHeight - elem.scrollTop, elem.clientHeight);
+    // console.log(elem.scrollHeight - elem.scrollTop, elem.clientHeight);
     if (elem.scrollHeight - elem.scrollTop <= elem.clientHeight + 10) {
-      Parser.getAllReviews(this.props.roomId, this.state.pageNumber, (data) => {
+      // Parser.getAllReviews(this.props.roomId, this.state.pageNumber, (data) => {
         this.setState({
           pageNumber: this.state.pageNumber + 1,
-          reviews: [...this.state.reviews, ...data]
+          // reviews: [...this.state.reviews, ...data]
         });
-      });
+      // });
     }
   }
 
@@ -74,8 +74,8 @@ class ModalReviews extends React.Component {
           <table className={styles.modalTable}>
             <tbody>
               <LazyLoad>
-                {this.state.reviews.map((review) => (
-                  <ModalReviewsEntry review={review} key={review._id} />
+                {this.props.reviews.map((review, i) => (
+                  <ModalReviewsEntry review={review} key={i} />
                 ))}
               </LazyLoad>
             </tbody>

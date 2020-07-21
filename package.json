@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server/index.js",
-    "dev:start": "nodemon server/index.js",
+    "start": "nodemon server/index.js",
     "inheritedSeed": "node database/seed.js",
     "userSeedPostgres": "node database/postgresDB/userGenerator.js",
     "propertySeedPostgres": "node database/postgresDB/propertyGenerator.js",
