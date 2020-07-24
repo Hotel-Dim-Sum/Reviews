@@ -40,9 +40,14 @@ database/postgresDB/reviewGenerator5.csv
 database/postgresDB/reviewGenerator6.csv
 database/postgresDB/reviewGenerator7.csv
 database/postgresDB/reviewGenerator8.csv
+database/postgresDB/reviewGeneratorTEST.csv
+database/postgresDB/reviewGeneratorEXTRA.csv
+
 
 database/cassandraDB/propertyGenerator.csv
 database/cassandraDB/userGenerator.csv
 database/cassandraDB/propertyReviewGenerator.csv
 database/cassandraDB/userReviewGenerator.csv
 database/cassandraDB/propertyReviewGenerator2.csv
+
+server/ec2StartScript.sh

@@ -60,7 +60,7 @@ class App extends React.Component {
           locationScore += data[i]['location_score'];
           checkInScore += data[i]['checkin_score'];
           valueScore += data[i]['value_score'];
-          overallScore += data[i]['total_score'];
+          overallScore += data[i]['score'];
         }
         cleanlinessScore = (cleanlinessScore / numReviews).toFixed(2);
         accuracyScore = (accuracyScore / numReviews).toFixed(2);

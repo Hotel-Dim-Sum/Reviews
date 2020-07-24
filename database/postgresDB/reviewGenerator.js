@@ -15,12 +15,13 @@ const getRandomReviewText = () => faker.lorem.sentences(Math.floor(Math.random()
 // change i to start from 0 to 10000000, then 10000000 to 20000000, etc.
 // chunk it so that it is 4 files of 20mil each, for 80 million reviews?
 const createPropertyReviews = () => {
-  writer.pipe(fs.createWriteStream('./database/postGresDB/reviewGenerator4.csv'));
-  for (let i = 30000000; i < 40000000; i++) {
+  writer.pipe(fs.createWriteStream('./database/postGresDB/reviewGeneratorEXTRA.csv'));
+  for (let i = 0; i < 10000000; i++) {
     const fakeDate = getRandomDate(new Date(2018, 0, 1), new Date(2020, 0, 1));
     writer.write({
-      id: i + 1,
-      roomId: faker.random.number({min: 1, max: 10000000}),
+      id: i + 80000001,
+      // roomId: faker.random.number({min: 1, max: 10000000}),
+      roomId: i + 1,
       userId: faker.random.number({min: 1, max: 2500000}),
       review_date: fakeDate,
       review_body: getRandomReviewText(),

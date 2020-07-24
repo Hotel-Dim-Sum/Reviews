@@ -3,7 +3,7 @@ const fs = require('fs');
 
 const getRandomRating = () => ((Math.random() * 2) + 3).toFixed(2);
 
-const getRandomRoom = () => Math.floor(Math.random() * 10000000) + 1;
+const getRandomRoom = () => Math.floor(Math.random() * 50000000) + 1;
 
 const getRandomUser = () => Math.floor(Math.random() * 2500000) + 1;
 
