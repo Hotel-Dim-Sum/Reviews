@@ -41,6 +41,8 @@ database/postgresDB/reviewGenerator6.csv
 database/postgresDB/reviewGenerator7.csv
 database/postgresDB/reviewGenerator8.csv
 database/postgresDB/reviewGeneratorTEST.csv
+database/postgresDB/reviewGeneratorEXTRA.csv
+
 
 database/cassandraDB/propertyGenerator.csv
 database/cassandraDB/userGenerator.csv
